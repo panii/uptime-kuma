@@ -308,13 +308,25 @@ class Monitor extends BeanModel {
                             data = JSON.stringify(data);
                         }
 
-                        if (data.includes(this.keyword)) {
-                            bean.msg += ", keyword is found";
-                            bean.status = UP;
-                        } else {
-                            throw new Error(bean.msg + ", but keyword is not found");
+                        //var keyword = "reg:idle\\s(\\w+)\\:\\s+(\\d+)";
+                        if (this.keyword.startsWith("reg:")) {
+                            var regExp = new RegExp(keyword.substr(4));
+                            var r = data.match(regExp);
+                            if (typeof r !== "undefined") {
+                                bean.status = UP;
+                                bean.msg += ", keyword regExp is found: " + r[0];
+                            } else {
+                                throw new Error(bean.msg + ", but keyword regExp is not found");
+                            }
                         }
-
+                        else {
+                            if (data.includes(this.keyword)) {
+                                bean.msg += ", keyword is found";
+                                bean.status = UP;
+                            } else {
+                                throw new Error(bean.msg + ", but keyword is not found");
+                            }
+                        }
                     }
 
                 } else if (this.type === "port") {
