@@ -310,13 +310,13 @@ class Monitor extends BeanModel {
 
                         //var keyword = "reg:idle\\s(\\w+)\\:\\s+(\\d+)";
                         if (this.keyword.startsWith("reg:")) {
-                            var regExp = new RegExp(keyword.substr(4));
+                            var regExp = new RegExp(this.keyword.substr(4));
                             var r = data.match(regExp);
-                            if (typeof r !== "undefined") {
+                            if (typeof r !== "undefined" && null !== r) {
                                 bean.status = UP;
                                 bean.msg += ", keyword regExp is found: " + r[0];
                             } else {
-                                throw new Error(bean.msg + ", but keyword regExp is not found");
+                                throw new Error(bean.msg + ", but keyword regExp not match");
                             }
                         }
                         else {
